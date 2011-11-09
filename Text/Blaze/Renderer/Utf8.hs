@@ -2,7 +2,6 @@
 module Text.Blaze.Renderer.Utf8
     ( renderHtmlBuilder
     , renderHtml
-    , renderHtmlToByteStringIO
     ) where
 
 import Data.Monoid (mappend, mempty)
@@ -10,7 +9,7 @@ import Data.List (isInfixOf)
 
 import qualified Data.ByteString.Lazy as L
 import qualified Data.Text as T (isInfixOf)
-import qualified Data.ByteString as S (ByteString, isInfixOf)
+import qualified Data.ByteString as S (isInfixOf)
 
 import Text.Blaze.Internal
 import Blaze.ByteString.Builder (Builder)
@@ -79,13 +78,3 @@ renderHtml :: Html          -- ^ HTML to render
            -> L.ByteString  -- ^ Resulting 'L.ByteString'
 renderHtml = B.toLazyByteString . renderHtmlBuilder
 {-# INLINE renderHtml #-}
-
--- | Repeatedly render HTML to a buffer and process this buffer using the given
--- IO action.
---
-renderHtmlToByteStringIO :: (S.ByteString -> IO ())
-                                          -- ^ IO action to execute per rendered buffer
-                         -> Html          -- ^ HTML to render
-                         -> IO ()         -- ^ Resulting IO action
-renderHtmlToByteStringIO io = B.toByteStringIO io . renderHtmlBuilder
-{-# INLINE renderHtmlToByteStringIO #-}

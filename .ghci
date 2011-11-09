@@ -1,1 +1,2 @@
-:set -ibenchmarks -itests -iutil -ilib/binary-0.5.0.2/src -idoc/examples
+:set -Wall
+:set -ibenchmarks -itests -iutil -idoc/examples

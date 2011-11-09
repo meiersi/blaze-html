@@ -1,5 +1,5 @@
 Name:         blaze-html
-Version:      0.4.2.1
+Version:      0.5.0.0
 Homepage:     http://jaspervdj.be/blaze
 Bug-Reports:  http://github.com/jaspervdj/blaze-html/issues
 License:      BSD3
@@ -46,7 +46,7 @@ Library
     Text.Blaze.Renderer.Text
   
   Build-depends:
-    base          >= 4 && < 5,
-    blaze-builder >= 0.2 && < 0.4,
-    text          >= 0.10,
-    bytestring    >= 0.9
+    base            >= 4 && < 5,
+    blaze-builder   == 0.4.*,
+    text            >= 0.10,
+    bytestring      >= 0.9.3 && < 0.10

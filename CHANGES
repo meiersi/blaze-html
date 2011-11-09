@@ -1,0 +1,6 @@
+* 0.5.0.0
+
+  - started recording a CHANGELOG
+  - use the new bytestring builder and the dropped function
+    'renderHtmlToByteStringIO', as the new bytestring builder does
+    not support 'toByteStringIO'. 
