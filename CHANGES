@@ -4,3 +4,5 @@
   - use the new bytestring builder and the dropped function
     'renderHtmlToByteStringIO', as the new bytestring builder does
     not support 'toByteStringIO'. 
+  - use &#34; instead of &quot; to escape a doublequote, thus saving one byte
+    per escaping
