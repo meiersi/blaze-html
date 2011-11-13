@@ -59,7 +59,7 @@ monoidConcat xs = sequence_ xs == foldr (>>) (return ()) xs
 --
 postEscapingCharacters :: String -> Bool
 postEscapingCharacters str =
-    LB.all (`notElem` forbidden) $ renderUsingUtf8 (string str)
+    LB.all (`notElem` forbidden) $ renderUsingUtf8 (toHtml str)
   where
     forbidden = map (fromIntegral . ord) "\"'<>"
 
@@ -98,7 +98,7 @@ unsafeByteStringId ws =
 --
 externalEndSequence :: String -> Bool
 externalEndSequence = not . isInfixOf "</" . LBC.unpack
-                    . renderUsingUtf8 . external . string
+                    . renderUsingUtf8 . external . toHtml
 
 -- | Check that the "<>" characters are well-nested.
 --
@@ -168,10 +168,10 @@ arbitraryHtml depth = do
     -- Generate arbitrary string element.
     arbitraryString = do
         s <- arbitrary
-        return $ string s
+        return $ toHtml (s :: String)
 
     -- Generate an arbitrary HTML attribute.
     arbitraryAttribute = do
         attr <- elements [id, class_, name]
         value <- arbitrary
-        return $ attr $ stringValue value
+        return $ attr $ toValue (value :: String)

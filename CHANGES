@@ -6,3 +6,7 @@
     not support 'toByteStringIO'. 
   - use &#34; instead of &quot; to escape a doublequote, thus saving one byte
     per escaping
+
+  - removed deprecated functions from Text.Blaze: 
+      text, lazyText, string, textValue, lazyTextValue, stringValue.
+    Use Blaze.Html.toValue instead.

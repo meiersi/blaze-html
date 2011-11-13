@@ -25,7 +25,7 @@
 -- > 	body $ do
 -- > 		div ! id "header" $ "Syntax"
 -- > 		p "This is an example of BlazeHtml syntax."
--- > 		ul $ forM_ [1, 2, 3] (li . string . show)
+-- > 		ul $ forM_ [1, 2, 3] (li . toValue . show)
 --
 -- The resulting HTML can now be extracted using:
 --
@@ -45,11 +45,8 @@ module Text.Blaze
 
       -- * Converting values to HTML.
     , ToHtml (..)
-    , text
     , preEscapedText
-    , lazyText
     , preEscapedLazyText
-    , string
     , preEscapedString
     , unsafeByteString
     , unsafeLazyByteString
@@ -60,11 +57,8 @@ module Text.Blaze
 
       -- * Converting values to attribute values.
     , ToValue (..)
-    , textValue
     , preEscapedTextValue
-    , lazyTextValue
     , preEscapedLazyTextValue
-    , stringValue
     , preEscapedStringValue
     , unsafeByteStringValue
     , unsafeLazyByteStringValue
@@ -73,7 +67,8 @@ module Text.Blaze
     , (!)
     ) where
 
-import Data.Monoid (mconcat)
+import Data.Monoid   (mconcat)
+import Data.Foldable (foldMap)
 
 import Data.Text (Text)
 import qualified Data.Text.Lazy as LT
@@ -96,39 +91,39 @@ instance ToHtml [Html] where
     {-# INLINE toHtml #-}
 
 instance ToHtml Text where
-    toHtml = text
+    toHtml = Content . Text
     {-# INLINE toHtml #-}
 
 instance ToHtml LT.Text where
-    toHtml = lazyText
+    toHtml = foldMap toHtml . LT.toChunks
     {-# INLINE toHtml #-}
 
 instance ToHtml String where
-    toHtml = string
+    toHtml = Content . String
     {-# INLINE toHtml #-}
 
 instance ToHtml Int where
-    toHtml = string . show
+    toHtml = toHtml . show
     {-# INLINE toHtml #-}
 
 instance ToHtml Char where
-    toHtml = string . return
+    toHtml = Content . String . return
     {-# INLINE toHtml #-}
 
 instance ToHtml Bool where
-    toHtml = string . show
+    toHtml = toHtml . show
     {-# INLINE toHtml #-}
 
 instance ToHtml Integer where
-    toHtml = string . show
+    toHtml = toHtml . show
     {-# INLINE toHtml #-}
 
 instance ToHtml Float where
-    toHtml = string . show
+    toHtml = toHtml . show
     {-# INLINE toHtml #-}
 
 instance ToHtml Double where
-    toHtml = string . show
+    toHtml = toHtml . show
     {-# INLINE toHtml #-}
 
 -- | Class allowing us to use a single function for attribute values
@@ -143,37 +138,37 @@ instance ToValue AttributeValue where
     {-# INLINE toValue #-}
 
 instance ToValue Text where
-    toValue = textValue
+    toValue = AttributeValue . Text
     {-# INLINE toValue #-}
 
 instance ToValue LT.Text where
-    toValue = lazyTextValue
+    toValue = foldMap toValue . LT.toChunks
     {-# INLINE toValue #-}
 
 instance ToValue String where
-    toValue = stringValue
+    toValue = AttributeValue . String
     {-# INLINE toValue #-}
 
 instance ToValue Int where
-    toValue = stringValue . show
+    toValue = toValue . show
     {-# INLINE toValue #-}
 
 instance ToValue Char where
-    toValue = stringValue . return
+    toValue = AttributeValue . String . return
     {-# INLINE toValue #-}
 
 instance ToValue Bool where
-    toValue = stringValue . show
+    toValue = toValue . show
     {-# INLINE toValue #-}
 
 instance ToValue Integer where
-    toValue = stringValue . show
+    toValue = toValue . show
     {-# INLINE toValue #-}
 
 instance ToValue Float where
-    toValue = stringValue . show
+    toValue = toValue . show
     {-# INLINE toValue #-}
 
 instance ToValue Double where
-    toValue = stringValue . show
+    toValue = toValue . show
     {-# INLINE toValue #-}
